@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/dataset-generator.schema.json",
+  "title": "Universal Constrained Dataset Generator",
+  "description": "Configuration schema for generating datasets across arbitrary domains with configurable fields and constraints.",
+  "type": "object",
+  "required": [
+    "dataset_name",
+    "record_count",
+    "fields"
+  ],
+  "properties": {
+    "dataset_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000000
+    },
+    "random_seed": {
+      "type": "integer"
+    },
+    "fields": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+          },
+          "type": {
+            "enum": [
+              "string",
+              "integer",
+              "number",
+              "boolean",
+              "date",
+              "datetime",
+              "email",
+              "phone",
+              "uuid",
+              "enum",
+              "array",
+              "object"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean",
+            "default": true
+          },
+          "nullable": {
+            "type": "boolean",
+            "default": false
+          },
+          "unique": {
+            "type": "boolean",
+            "default": false
+          },
+          "min": {
+            "type": "number"
+          },
+          "max": {
+            "type": "number"
+          },
+          "min_length": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "max_length": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pattern": {
+            "type": "string"
+          },
+          "allowed_values": {
+            "type": "array",
+            "items": {}
+          },
+          "format": {
+            "type": "string"
+          },
+          "default": {},
+          "distribution": {
+            "enum": [
+              "uniform",
+              "normal",
+              "weighted",
+              "random",
+              "sequential",
+              "custom"
+            ]
+          },
+          "weights": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "precision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "items": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "range",
+              "unique",
+              "foreign_key",
+              "conditional",
+              "cross_field",
+              "regex",
+              "distribution",
+              "business_rule",
+              "date_logic",
+              "custom"
+            ]
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "expression": {
+            "type": "string"
+          },
+          "operator": {
+            "enum": [
+              "==",
+              "!=",
+              ">",
+              "<",
+              ">=",
+              "<=",
+              "in",
+              "not_in"
+            ]
+          },
+          "value": {},
+          "condition": {
+            "type": "string"
+          },
+          "error_message": {
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "error",
+              "warning"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "fields"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "one_to_one",
+              "one_to_many",
+              "many_to_many",
+              "parent_child"
+            ]
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reference_dataset": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "enum": [
+            "json",
+            "jsonl",
+            "csv",
+            "parquet",
+            "sql"
+          ]
+        },
+        "filename": {
+          "type": "string"
+        },
+        "include_metadata": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

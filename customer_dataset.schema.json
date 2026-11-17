@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/customer-dataset.schema.json",
+  "title": "Customer Dataset",
+  "description": "JSON Schema for a customer dataset containing demographic, purchase, and review information.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "dataset_name",
+    "data"
+  ],
+  "properties": {
+    "dataset_name": {
+      "type": "string",
+      "minLength": 1,
+      "default": "customer_dataset"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/customer"
+      },
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "customer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "customer_id",
+        "age",
+        "gender",
+        "city",
+        "annual_income",
+        "purchase_amount",
+        "product_category",
+        "rating",
+        "review"
+      ],
+      "properties": {
+        "customer_id": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Positive customer identifier. Enforce uniqueness across records in application code."
+        },
+        "age": {
+          "type": "integer",
+          "minimum": 18,
+          "maximum": 100
+        },
+        "gender": {
+          "type": "string",
+          "enum": [
+            "Female",
+            "Male",
+            "Other"
+          ]
+        },
+        "city": {
+          "type": "string",
+          "enum": [
+            "Pune",
+            "Bangalore",
+            "Hyderabad",
+            "Chennai",
+            "Mumbai"
+          ]
+        },
+        "annual_income": {
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 0.01
+        },
+        "purchase_amount": {
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 0.01
+        },
+        "product_category": {
+          "type": "string",
+          "enum": [
+            "Books",
+            "Electronics",
+            "Clothing",
+            "Grocery"
+          ]
+        },
+        "rating": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "review": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 1000
+        }
+      }
+    }
+  }
+}
